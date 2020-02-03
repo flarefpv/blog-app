@@ -1,8 +1,0 @@
--setup server
--db for blog entries
--index of entries
--display page for single entries
--page for creating entries
-able to delete entries
-able to edit entries
-authentication
