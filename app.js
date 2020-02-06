@@ -5,6 +5,8 @@ bodyParser = require('body-parser'),
 expressSanitizer = require('express-sanitizer'),
 methodOverride = require('method-override')
 
+const Blog = require('./models/blog')
+
 
 //Setup
 app.set('view engine', 'ejs')
@@ -16,18 +18,7 @@ mongoose.connect('mongodb://localhost/myblog', { useNewUrlParser: true, useUnifi
 
 
 //Shemas
-const Schema = mongoose.Schema
 
-const blogSchema = new Schema({
-    title:  String,
-    image: String,
-    tagline: String,
-    body:   String,
-    genre: String,
-    date: { type: Date, default: Date.now },
-})
-
-const Blog = mongoose.model('Blog', blogSchema)
 
 // Blog.create({
 //     title: 'New Blog',
