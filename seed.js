@@ -6,7 +6,7 @@ const seeds = [
     {
         title: 'Blog 1',
         image: 'https://external-content.duckduckgo.com/iu/?u=http%3A%2F%2Fstatic.techspot.com%2Fimages%2Fproducts%2F2019%2Flaptops%2Forg%2F2019-08-09-product-5.jpg&f=1&nofb=1',
-        body: 'Wowie I cant a bleve this blog oof',
+        body: 'Wowie I cant a bleve this blog oof Wowie I cant a bleve this blog oofWowie I cant a bleve this blog oofWowie I cant a bleve this blog oofWowie I cant a bleve this blog oofWowie I cant a bleve this blog oofWowie I cant a bleve this blog oofWowie I cant a bleve this blog oofWowie I cant a bleve this blog oofWowie I cant a bleve this blog oofWowie I cant a bleve this blog oofWowie I cant a bleve this blog oofWowie I cant a bleve this blog oofWowie I cant a bleve this blog oofWowie I cant a bleve this blog oof',
     },
     {
         title: 'Blog 2',
