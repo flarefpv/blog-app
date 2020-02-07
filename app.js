@@ -6,6 +6,7 @@ expressSanitizer = require('express-sanitizer'),
 methodOverride = require('method-override')
 
 const Blog = require('./models/blog')
+seedDB = require('./seed')
 
 
 //Setup
@@ -30,7 +31,7 @@ mongoose.connect('mongodb://localhost/myblog', { useNewUrlParser: true, useUnifi
 //         console.log(err)
 //     }
 // })
-
+seedDB();
 //Routes
 app.get('/', (req, res) => {
     res.redirect('/posts')
@@ -67,7 +68,7 @@ app.post('/posts', (req, res) => {
 })
 
 app.get('/posts/:id', (req, res) => {
-    Blog.findById(req.params.id, (err, foundBlog) => {
+    Blog.findById(req.params.id).populate('comments').exec((err, foundBlog) => {
         if(err){
             res.redirect('/')
         } else {res.render('show', {blog: foundBlog})}
