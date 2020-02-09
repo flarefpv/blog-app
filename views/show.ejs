@@ -47,6 +47,13 @@
         <p><%= comment.author %></p>
       <% }) %> 
     </div>
+    <form action="/posts/<%= blog._id %>/comments" method="POST">
+      <div class="form-group">
+        <input type="text" name="comment[author]">
+        <input type="text" name="comment[text]">
+        <button type="submit">Submit</button>
+      </div>
+    </form>
     <div class="row">
         <a href="/posts/<%= blog._id %>/edit" class="btn btn-outline-info btn-lg mr-3 mb-5">Edit</a>
     <form action="/posts/<%= blog.id %>?_method=DELETE" method="POST">

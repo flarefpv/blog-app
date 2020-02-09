@@ -24,11 +24,18 @@ async function seedDB(){
     await Blog.remove({}, function(err){
         if(err){
             console.log(err)
+        }else {
+            console.log('Blogs removed')
         }
-        console.log('Comments removed')
     })
-    console.log('Blogs removed')
-    await Comment.remove({})
+    
+    await Comment.remove({}, function(err){
+        if(err){
+            console.log(err)
+        } else{
+            console.log('Comments removed')
+        }
+    })
     
 
     for(const seed of seeds){
