@@ -1,64 +1,78 @@
-<%- include ('partials/header') -%> 
+<%- include ('partials/header') -%>
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <div class="container">
+  <div class="container">
     <a class="navbar-brand mr-5" href="/"><i class="fas fa-book"></i> Blog</a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+      aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
-      <div class="collapse navbar-collapse" id="navbarNav">
-        <ul class="navbar-nav">
-          <li class="nav-item">
-            <a class="nav-link" href="/">Home <span class="sr-only"></span></a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="/posts/genre/tech">Tech</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="/posts/genre/development">Development</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="/posts/genre/gaming">Gaming</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="/posts/genre/other">Other</a>
-          </li>
-        </ul>
-      </div>
-      <div class="collapse navbar-collapse mr-auto" id="navbarNav">
-        <ul class="navbar-nav mr-auto">
-          <li class="nav-item">
-            <a href="/posts/new" class="nav-link">New Post</a>
-          </li>
-        </ul>
-      </div>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav">
+        <li class="nav-item">
+          <a class="nav-link" href="/">Home <span class="sr-only"></span></a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/posts/genre/tech">Tech</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/posts/genre/development">Development</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/posts/genre/gaming">Gaming</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/posts/genre/other">Other</a>
+        </li>
+      </ul>
     </div>
-  </nav>
+    <div class="collapse navbar-collapse mr-auto" id="navbarNav">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item">
+          <a href="/posts/new" class="nav-link">New Post</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
 <div class="container mt-5">
-    <img class="blog-img" src="<%= blog.image %>">
-    <h1><%= blog.title %></h1>
-    <p class=""><%- blog.body %></p>
-    <hr>
-    <div class="row">
-        <span class="mb-5"><%= blog.date.toDateString() %></span>
+  <img class="blog-img" src="<%= blog.image %>">
+  <h1 class="mb-5"><%= blog.title %></h1>
+  <p class="blog-body"><%- blog.body %></p>
+  <hr>
+  <div class="row">
+    <span class="mb-5 ml-auto"><%= blog.date.toDateString() %></span>
+  </div>
+  <form action="/posts/<%= blog._id %>/comments" method="POST">
+    <div class="form-group">
+      <h2>Leave a comment:</h2>
+      <input class="form-control mb-3" type="text" name="comment[author]" placeholder="name">
+      <textarea class="form-control mb-3" name="comment[text]" placeholder="comment" cols="30" rows="7"></textarea>
+      <button type="submit" class="btn btn-outline-dark">Submit</button>
     </div>
-    <div>
-      <% blog.comments.forEach(comment => { %>
-        <p><%= comment.text %></p>
-        <p><%= comment.author %></p>
-      <% }) %> 
+  </form>
+  <div class="row">
+    <div class="col-12">
+      <h3 class="mb-3">Comments</h3>
     </div>
-    <form action="/posts/<%= blog._id %>/comments" method="POST">
-      <div class="form-group">
-        <input type="text" name="comment[author]">
-        <input type="text" name="comment[text]">
-        <button type="submit">Submit</button>
+  </div>
+  <% blog.comments.forEach(comment => { %>
+  <div class="row">
+    <div class="col-12">
+      <div class="comment">
+        <a href="#" class="ml-1"><%= comment.author %><a>
+        <p class="ml-4"><%= comment.text %></p>
       </div>
-    </form>
-    <div class="row">
-        <a href="/posts/<%= blog._id %>/edit" class="btn btn-outline-info btn-lg mr-3 mb-5">Edit</a>
-    <form action="/posts/<%= blog.id %>?_method=DELETE" method="POST">
-        <button class="btn btn-danger btn-lg " type="submit">Delete</button>
+    </div>
+  </div>
+  <% }) %>
+  
+  <div class="row">
+    <div class="col-12">
+    <form class="inline-form my-5" action="/posts/<%= blog.id %>?_method=DELETE" method="POST">
+      <a href="/posts/<%= blog._id %>/edit" class="btn btn-outline-info btn-lg mr-3">Edit</a>
+      <button class="btn btn-danger btn-lg " type="submit">Delete</button>
     </form>
     </div>
+  </div>
 </div>
-<%- include ('partials/footer') -%> 
+<%- include ('partials/footer') -%>
