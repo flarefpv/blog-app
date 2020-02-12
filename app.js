@@ -3,10 +3,15 @@ app = express(),
 mongoose = require('mongoose'),
 bodyParser = require('body-parser'),
 expressSanitizer = require('express-sanitizer'),
-methodOverride = require('method-override')
+methodOverride = require('method-override'),
+passport = require('passport'),
+localStrategy = require('passport-local')
 
+
+//Schemas
 const Blog = require('./models/blog'),
 Comment = require('./models/comment'),
+User = require('./models/user')
 seedDB = require('./seed')
 
 
@@ -18,22 +23,22 @@ app.use(expressSanitizer())
 app.use(methodOverride('_method'))
 mongoose.connect('mongodb://localhost/myblog', { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false })
 
-
-//Shemas
-
-
-// Blog.create({
-//     title: 'New Blog',
-//     image: 'https://images.unsplash.com/photo-1483728642387-6c3bdd6c93e5?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1355&q=80',
-//     tagline: 'These mountains are lit',
-//     body: 'I really like mountains they are pretty to look at and shit',
-// }, (err) => {
-//     if (err){
-//         console.log(err)
-//     }
-// })
+//Deletes all db entries and seeds
 seedDB();
-//Routes
+
+app.use(require('express-session')({
+    secret: 'blarfblargblah',
+    resave: false,
+    saveUninitialized: false
+}))
+
+app.use(passport.initialize())
+app.use(passport.session())
+passport.use(new localStrategy(User.authenticate()))
+passport.serializeUser(User.serializeUser())
+passport.deserializeUser(User.deserializeUser())
+
+//Index Routes
 app.get('/', (req, res) => {
     res.redirect('/posts')
 })
@@ -59,6 +64,8 @@ app.get('/posts/genre/:genre', (req, res) => {
     })
 })
 
+//Create Routes
+
 app.get('/posts/new', (req, res) => {
     res.render('new')
 })
@@ -74,9 +81,13 @@ app.post('/posts', (req, res) => {
     })
 })
 
+//Show Route
+
 app.get('/posts/:id', (req, res) => {
     res.redirect('/posts/' + req.params.id + '/comments')
 })
+
+//Update/Destroy Routes
 
 app.get('/posts/:id/edit', (req, res) => {
     Blog.findById(req.params.id, (err, foundBlog) => {
@@ -109,6 +120,8 @@ app.delete('/posts/:id', (req, res) => {
     })
 })
 
+//Comments Routes
+
 app.get('/posts/:id/comments', (req, res) => {
     Blog.findById(req.params.id).populate('comments').exec((err, foundBlog) => {
         if(err){
@@ -131,6 +144,41 @@ app.post('/posts/:id/comments', async function(req, res){
     blog.save()
     res.redirect('/posts/' + req.params.id + '/comments')
     })
+
+//Auth Routes
+
+app.get('/register', (req, res) => {
+    res.render('register')
+})
+
+app.post('/register', (req, res) => {
+    let newUsername = new User({username: req.body.username})
+    User.register(newUsername, req.body.password, (err, user) => {
+        if(err){
+            console.log(err)
+            return res.render('register')
+        }
+        passport.authenticate('local')(req, res, function(){
+            console.log(user)
+            res.redirect('/')
+        })
+    })
+})
+
+app.get('/login', (req, res) => {
+    res.render('login')
+})
+
+app.post('/login', passport.authenticate('local', {
+    successRedirect: '/posts', 
+    failureRedirect: '/login'
+}), (req, res) => {
+})
+
+app.get('/logout', (req, res) => {
+    req.logout()
+    res.redirect('/posts')
+})
 
 //Server
 app.listen(3000, function(){
