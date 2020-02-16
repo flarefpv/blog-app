@@ -51,7 +51,14 @@
   <div class="row">
     <span class="mb-5 ml-auto"><%= blog.date.toDateString() %></span>
   </div>
-  <h2 class="mb-5"><a href="/login">Log in</a> or <a href="/register">Sign Up</a> to leave a comment!</h2>
+  <form action="/posts/<%= blog._id %>/comments" method="POST">
+    <div class="form-group">
+      <h2>Leave a comment:</h2>
+      <input class="form-control mb-3" type="text" name="comment[author]" placeholder="name">
+      <textarea class="form-control mb-3" name="comment[text]" placeholder="comment" cols="30" rows="7"></textarea>
+      <button type="submit" class="btn btn-outline-dark">Submit</button>
+    </div>
+  </form>
   <div class="row">
     <div class="col-12">
       <h3 class="mb-3">Comments</h3>

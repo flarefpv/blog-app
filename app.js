@@ -14,7 +14,6 @@ Comment = require('./models/comment'),
 User = require('./models/user')
 seedDB = require('./seed')
 
-
 //Setup
 app.set('view engine', 'ejs')
 app.use(express.static(__dirname + '/public'))
@@ -84,7 +83,15 @@ app.post('/posts', (req, res) => {
 //Show Route
 
 app.get('/posts/:id', (req, res) => {
-    res.redirect('/posts/' + req.params.id + '/comments')
+    Blog.findById(req.params.id).populate('comments').exec((err, foundBlog) => {
+        if(err){
+            console.log(err)
+        } else if (req.isAuthenticated()){
+            res.redirect('/posts/' + req.params.id + '/comments')
+        } else {
+            res.render('show', {blog: foundBlog, comments: foundBlog.comments})
+        }
+    })
 })
 
 //Update/Destroy Routes
@@ -122,12 +129,12 @@ app.delete('/posts/:id', (req, res) => {
 
 //Comments Routes
 
-app.get('/posts/:id/comments', (req, res) => {
+app.get('/posts/:id/comments', isLoggedIn, (req, res) => {
     Blog.findById(req.params.id).populate('comments').exec((err, foundBlog) => {
         if(err){
             console.log(err)
         } else{
-            res.render('show', {blog: foundBlog, comments: foundBlog.comments})
+            res.render('comments', {blog: foundBlog, comments: foundBlog.comments})
         }
     })
 })
@@ -179,6 +186,13 @@ app.get('/logout', (req, res) => {
     req.logout()
     res.redirect('/posts')
 })
+
+function isLoggedIn(req, res, next){
+    if (req.isAuthenticated()){
+        return next();
+    }
+    res.redirect('/login')
+}
 
 //Server
 app.listen(3000, function(){
