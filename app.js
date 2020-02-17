@@ -45,9 +45,9 @@ app.use((req, res, next) => {
     next()
 })
 
-app.use(indexRoutes)
-app.use(blogRoutes)
-app.use(commentRoutes)
+app.use('/', indexRoutes)
+app.use('/posts', blogRoutes)
+app.use('/posts/:id/comments', commentRoutes)
 
 //Server
 app.listen(3000, function(){

@@ -1,11 +1,10 @@
 const express = require('express')
-const router = express.Router()
+const router = express.Router({mergeParams: true})
 const Blog = require('../models/blog'),
 Comment = require('../models/comment')
 
-//Comments Routes
-
-router.get('/posts/:id/comments', isLoggedIn, (req, res) => {
+//Shows comments page if authenticated
+router.get('/', isLoggedIn, (req, res) => {
     Blog.findById(req.params.id).populate('comments').exec((err, foundBlog) => {
         if(err){
             console.log(err)
@@ -15,7 +14,8 @@ router.get('/posts/:id/comments', isLoggedIn, (req, res) => {
     })
 })
 
-router.post('/posts/:id/comments', async function(req, res){
+//Creates new comment
+router.post('/', async function(req, res){
     let blog = await Blog.findById(req.params.id)
     req.body.commment = req.sanitize(req.body.comment)
     let comment = await Comment.create({
@@ -28,6 +28,7 @@ router.post('/posts/:id/comments', async function(req, res){
     res.redirect('/posts/' + req.params.id + '/comments')
     })
 
+//Auth middleware
 function isLoggedIn(req, res, next){
     if (req.isAuthenticated()){
         return next();
