@@ -3,7 +3,7 @@ passport = require('passport')
 const router = express.Router()
 const User = require('../models/user')
 
-//Index Route
+//Route Route
 router.get('/', (req, res) => {
     res.redirect('/posts')
 })

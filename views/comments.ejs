@@ -11,7 +11,6 @@
   <form action="/posts/<%= blog._id %>/comments" method="POST">
     <div class="form-group">
       <h2>Leave a comment:</h2>
-      <input class="form-control mb-3" type="text" name="comment[author]" placeholder="name">
       <textarea class="form-control mb-3" name="comment[text]" placeholder="comment" cols="30" rows="7"></textarea>
       <button type="submit" class="btn btn-outline-dark">Submit</button>
     </div>
@@ -25,7 +24,7 @@
   <div class="row">
     <div class="col-12">
       <div class="comment">
-        <a href="#" class="ml-1"><%= comment.author %><a>
+        <p class="ml-1"><b><%= comment.author.username %>:</b><p>
         <p class="ml-4"><%= comment.text %></p>
       </div>
     </div>

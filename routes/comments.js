@@ -19,10 +19,9 @@ router.post('/', async function(req, res){
     let blog = await Blog.findById(req.params.id)
     req.body.commment = req.sanitize(req.body.comment)
     let comment = await Comment.create({
-        author: req.body.comment.author,
+        author: req.user,
         text: req.body.comment.text
     })
-    console.log(comment)
     blog.comments.push(comment)
     blog.save()
     res.redirect('/posts/' + req.params.id + '/comments')

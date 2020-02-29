@@ -21,6 +21,8 @@ const seeds = [
 ]
 
 async function seedDB(){
+    
+    //Removes blogs
     await Blog.remove({}, function(err){
         if(err){
             console.log(err)
@@ -29,6 +31,7 @@ async function seedDB(){
         }
     })
     
+    //Removes comments
     await Comment.remove({}, function(err){
         if(err){
             console.log(err)
@@ -36,20 +39,20 @@ async function seedDB(){
             console.log('Comments removed')
         }
     })
-    
 
-    for(const seed of seeds){
-       let blog = await Blog.create(seed)
-       console.log('Blog Created')
-       let comment = await Comment.create({
-            author: 'Timmy Dingle',
-            text: 'This is a very nice post'
-        })
-        console.log('Comment Created')
-        blog.comments.push(comment)
-        blog.save();
-        console.log('Comment added to blog post')
-    }
+    //Seeding
+    // for(const seed of seeds){
+    //    let blog = await Blog.create(seed)
+    //    console.log('Blog Created')
+    //    let comment = await Comment.create({
+    //         author: ,
+    //         text: 'This is a very nice post'
+    //     })
+    //     console.log('Comment Created')
+    //     blog.comments.push(comment)
+    //     blog.save();
+    //     console.log('Comment added to blog post')
+    // }
 }
 
 module.exports = seedDB

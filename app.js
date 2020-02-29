@@ -7,6 +7,7 @@ methodOverride = require('method-override'),
 passport = require('passport'),
 localStrategy = require('passport-local')
 
+//Requiring Routes
 const indexRoutes = require('./routes/index'),
  blogRoutes = require('./routes/blogs'),
  commentRoutes = require('./routes/comments')
@@ -34,6 +35,7 @@ app.use(require('express-session')({
     saveUninitialized: false
 }))
 
+//Passport Setup
 app.use(passport.initialize())
 app.use(passport.session())
 passport.use(new localStrategy(User.authenticate()))
@@ -45,6 +47,7 @@ app.use((req, res, next) => {
     next()
 })
 
+//Routing
 app.use('/', indexRoutes)
 app.use('/posts', blogRoutes)
 app.use('/posts/:id/comments', commentRoutes)
