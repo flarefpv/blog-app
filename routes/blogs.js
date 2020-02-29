@@ -27,13 +27,19 @@ router.get('/genre/:genre', (req, res) => {
 
 //Create Routes
 
-router.get('/new', (req, res) => {
+router.get('/new', isLoggedIn, (req, res) => {
     res.render('new')
 })
 
-router.post('/', (req, res) => {
+router.post('/', isLoggedIn, (req, res) => {
     req.body.blog.body = req.sanitize(req.body.blog.body)
+    let author = {
+        id: req.user._id,
+        username: req.user.username
+    }
     Blog.create(req.body.blog, (err, newBlog) => {
+        newBlog.author = author
+        newBlog.save()
         if(err){
             res.render('new')
         } else{
@@ -52,6 +58,7 @@ router.get('/:id', (req, res) => {
             res.redirect('/posts/' + req.params.id + '/comments')
         } else {
             res.render('show', {blog: foundBlog, comments: foundBlog.comments})
+            console.log(foundBlog.author)
         }
     })
 })
@@ -88,5 +95,15 @@ router.delete('/:id', (req, res) => {
         }
     })
 })
+
+//Auth middleware
+
+function isLoggedIn(req, res, next){
+    if (req.isAuthenticated()){
+        return next();
+    }
+    res.redirect('/login')
+}
+
 
 module.exports = router

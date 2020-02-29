@@ -9,8 +9,8 @@
           <img class="card-img" src="<%= blog.image %>">
         </div>
           <div class="col-12 col-md-6 mt-5 text-center text-md-left">
-            <h2><%= blog.title %></h2>
-          <h3><%= blog.tagline %> </h3>
+            <h2><%= blog.title %> </h2>
+          <h3>by <%= blog.author.username %> </h3>
           <p><%- blog.body.substring(0, 150) %>...</p>
           <a href="/posts/<%= blog._id %>">Read More...</a>
           </div>

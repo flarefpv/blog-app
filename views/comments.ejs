@@ -6,8 +6,18 @@
   <p class="blog-body"><%- blog.body %></p>
   <hr>
   <div class="row">
-    <span class="mb-5 ml-auto"><%= blog.date.toDateString() %></span>
+    <span class="mb-5 ml-auto">Written by <b><%= author %></b> - <%= blog.date.toDateString() %></span>
   </div>
+  <% if(blog.author.username == currentUser.username) {%>
+    <div class="row">
+      <div class="col-12">
+      <form class="inline-form my-5" action="/posts/<%= blog.id %>?_method=DELETE" method="POST">
+        <a href="/posts/<%= blog._id %>/edit" class="btn btn-outline-info btn-lg mr-3">Edit</a>
+        <button class="btn btn-danger btn-lg " type="submit">Delete</button>
+      </form>
+      </div>
+    </div>
+  <% } %> 
   <form action="/posts/<%= blog._id %>/comments" method="POST">
     <div class="form-group">
       <h2>Leave a comment:</h2>
@@ -30,14 +40,5 @@
     </div>
   </div>
   <% }) %>
-  
-  <div class="row">
-    <div class="col-12">
-    <form class="inline-form my-5" action="/posts/<%= blog.id %>?_method=DELETE" method="POST">
-      <a href="/posts/<%= blog._id %>/edit" class="btn btn-outline-info btn-lg mr-3">Edit</a>
-      <button class="btn btn-danger btn-lg " type="submit">Delete</button>
-    </form>
-    </div>
-  </div>
 </div>
 <%- include ('partials/footer') -%>

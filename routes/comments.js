@@ -9,7 +9,7 @@ router.get('/', isLoggedIn, (req, res) => {
         if(err){
             console.log(err)
         } else{
-            res.render('comments', {blog: foundBlog, comments: foundBlog.comments})
+            res.render('comments', {blog: foundBlog, comments: foundBlog.comments, author: foundBlog.author.username})
         }
     })
 })

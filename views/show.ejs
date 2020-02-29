@@ -24,15 +24,6 @@
     </div>
   </div>
   <% }) %>
-  
-  <div class="row">
-    <div class="col-12">
-    <form class="inline-form my-5" action="/posts/<%= blog.id %>?_method=DELETE" method="POST">
-      <a href="/posts/<%= blog._id %>/edit" class="btn btn-outline-info btn-lg mr-3">Edit</a>
-      <button class="btn btn-danger btn-lg " type="submit">Delete</button>
-    </form>
-    </div>
-  </div>
 </div>
 
 <%- include ('partials/footer') -%>
