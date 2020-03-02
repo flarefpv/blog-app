@@ -65,10 +65,10 @@ router.get('/:id', (req, res) => {
 
 //Update/Destroy Routes
 
-router.get('/:id/edit', (req, res) => {
+router.get('/:id/edit', isLoggedIn, (req, res) => {
     Blog.findById(req.params.id, (err, foundBlog) => {
-        if(err){
-            res.redirect('/posts')
+        if(err || req.user.username != foundBlog.author.username){
+            res.redirect('back')
         } else {
             res.render('edit', {blog: foundBlog})
         }
@@ -78,7 +78,7 @@ router.get('/:id/edit', (req, res) => {
 router.put('/:id', (req, res) => {
     req.body.blog.body = req.sanitize(req.body.blog.body)
     Blog.findByIdAndUpdate(req.params.id, req.body.blog, (err, updatedBlog) => {
-        if(err){
+        if(err || req.user.username != foundBlog.author.username){
             res.redirect('/posts')
         } else{
             res.redirect('/posts/' + req.params.id)
@@ -88,7 +88,7 @@ router.put('/:id', (req, res) => {
 
 router.delete('/:id', (req, res) => {
     Blog.findByIdAndDelete(req.params.id, (err, deletedBlog) =>{
-        if(err){
+        if(err || req.user.username != foundBlog.author.username){
             res.redirect('/posts/' + req.params.id)
         } else{
             res.redirect('/posts')
