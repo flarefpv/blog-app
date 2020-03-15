@@ -2,9 +2,10 @@ const express = require('express')
 const router = express.Router({mergeParams: true})
 const Blog = require('../models/blog'),
 Comment = require('../models/comment')
+const middleware = require('../middleware')
 
 //Shows comments page if authenticated
-router.get('/', isLoggedIn, (req, res) => {
+router.get('/', middleware.isLoggedIn, (req, res) => {
     Blog.findById(req.params.id).populate('comments').exec((err, foundBlog) => {
         if(err){
             console.log(err)
@@ -40,13 +41,5 @@ router.delete('/:commentId', (req, res) => {
         }
     })
 })
-
-//Auth middleware
-function isLoggedIn(req, res, next){
-    if (req.isAuthenticated()){
-        return next();
-    }
-    res.redirect('/login')
-}
 
 module.exports = router

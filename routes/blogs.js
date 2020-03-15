@@ -1,6 +1,8 @@
 const express = require('express')
 const router = express.Router()
 const Blog = require('../models/blog')
+const flash = require('connect-flash')
+const middleware = require('../middleware')
 
 
 //Index routes
@@ -27,11 +29,11 @@ router.get('/genre/:genre', (req, res) => {
 
 //Create Routes
 
-router.get('/new', isLoggedIn, (req, res) => {
+router.get('/new', middleware.isLoggedIn, (req, res) => {
     res.render('new')
 })
 
-router.post('/', isLoggedIn, (req, res) => {
+router.post('/', middleware.isLoggedIn, (req, res) => {
     req.body.blog.body = req.sanitize(req.body.blog.body)
     let author = {
         id: req.user._id,
@@ -65,7 +67,7 @@ router.get('/:id', (req, res) => {
 
 //Update/Destroy Routes
 
-router.get('/:id/edit', isLoggedIn, (req, res) => {
+router.get('/:id/edit', middleware.isLoggedIn, (req, res) => {
     Blog.findById(req.params.id, (err, foundBlog) => {
         if(err || req.user.username != foundBlog.author.username){
             res.redirect('back')
@@ -95,15 +97,5 @@ router.delete('/:id', (req, res) => {
         }
     })
 })
-
-//Auth middleware
-
-function isLoggedIn(req, res, next){
-    if (req.isAuthenticated()){
-        return next();
-    }
-    res.redirect('/login')
-}
-
 
 module.exports = router

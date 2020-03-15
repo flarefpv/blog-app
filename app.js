@@ -5,7 +5,8 @@ bodyParser = require('body-parser'),
 expressSanitizer = require('express-sanitizer'),
 methodOverride = require('method-override'),
 passport = require('passport'),
-localStrategy = require('passport-local')
+localStrategy = require('passport-local'),
+flash = require('connect-flash')
 
 //Requiring Routes
 const indexRoutes = require('./routes/index'),
@@ -19,15 +20,16 @@ User = require('./models/user')
 seedDB = require('./seed')
 
 //Setup
+mongoose.connect('mongodb://localhost/myblog', { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false })
 app.set('view engine', 'ejs')
 app.use(express.static(__dirname + '/public'))
 app.use(bodyParser.urlencoded({extended: true}))
 app.use(expressSanitizer())
 app.use(methodOverride('_method'))
-mongoose.connect('mongodb://localhost/myblog', { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false })
+app.use(flash())
 
 //Deletes all db entries and seeds
-seedDB();
+seedDB()
 
 app.use(require('express-session')({
     secret: 'blarfblargblah',
@@ -44,6 +46,7 @@ passport.deserializeUser(User.deserializeUser())
 
 app.use((req, res, next) => {
     res.locals.currentUser = req.user
+    res.locals.message = req.flash('error')
     next()
 })
 
