@@ -27,6 +27,20 @@ router.post('/', async function(req, res){
     res.redirect('/posts/' + req.params.id + '/comments')
     })
 
+
+//deletes comment if authorized
+router.delete('/:commentId', (req, res) => {
+    Comment.findByIdAndDelete(req.params.commentId, (err, foundComment) =>{
+        if(err || req.user.username != foundComment.author.username){
+            res.redirect('back')
+            console.log(err)
+        } else{
+            res.redirect('back')
+            console.log('that should have worked' + foundComment)
+        }
+    })
+})
+
 //Auth middleware
 function isLoggedIn(req, res, next){
     if (req.isAuthenticated()){

@@ -36,6 +36,11 @@
       <div class="comment">
         <p class="ml-1"><b><%= comment.author.username %>:</b><p>
         <p class="ml-4"><%= comment.text %></p>
+        <% if(comment.author.username == currentUser.username) {%> 
+        <form action="/posts/<%= blog.id %>/comments/<%= comment.id %>?_method=DELETE" method="POST">
+          <button class="btn btn-danger btn-sm" type="submit">Delete Comment</button>
+        </form>
+      <% } %> 
       </div>
     </div>
   </div>
