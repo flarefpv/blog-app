@@ -1,9 +1,8 @@
 const express = require('express')
 const router = express.Router()
 const Blog = require('../models/blog')
-const flash = require('connect-flash')
 const middleware = require('../middleware')
-
+const flash = require('connect-flash')
 
 //Index routes
 router.get('/', (req, res) => {
@@ -43,7 +42,8 @@ router.post('/', middleware.isLoggedIn, (req, res) => {
         newBlog.author = author
         newBlog.save()
         if(err){
-            res.render('new')
+            flash('error', 'Something went wrong! Please try again.')
+            res.redirect('/new')
         } else{
             res.redirect('/posts')
         }
@@ -60,7 +60,6 @@ router.get('/:id', (req, res) => {
             res.redirect('/posts/' + req.params.id + '/comments')
         } else {
             res.render('show', {blog: foundBlog, comments: foundBlog.comments})
-            console.log(foundBlog.author)
         }
     })
 })
@@ -70,7 +69,8 @@ router.get('/:id', (req, res) => {
 router.get('/:id/edit', middleware.isLoggedIn, (req, res) => {
     Blog.findById(req.params.id, (err, foundBlog) => {
         if(err || req.user.username != foundBlog.author.username){
-            res.redirect('back')
+            req.flash('error', "You don't have permission to do that.")
+            res.redirect('/posts/' + req.params.id + '/comments')
         } else {
             res.render('edit', {blog: foundBlog})
         }
@@ -81,7 +81,8 @@ router.put('/:id', (req, res) => {
     req.body.blog.body = req.sanitize(req.body.blog.body)
     Blog.findByIdAndUpdate(req.params.id, req.body.blog, (err, foundBlog) => {
         if(err || req.user.username != foundBlog.author.username){
-            res.redirect('/posts')
+            req.flash('error', "You don't have permission to do that.")
+            res.redirect('/posts/' + req.params.id + '/comments')
         } else{
             res.redirect('/posts/' + req.params.id)
         }
@@ -91,7 +92,8 @@ router.put('/:id', (req, res) => {
 router.delete('/:id', (req, res) => {
     Blog.findByIdAndDelete(req.params.id, (err, foundBlog) =>{
         if(err || req.user.username != foundBlog.author.username){
-            res.redirect('/posts/' + req.params.id)
+            req.flash('error', "You don't have permission to do that.")
+            res.redirect('/posts/' + req.params.id + '/comments')
         } else{
             res.redirect('/posts')
         }

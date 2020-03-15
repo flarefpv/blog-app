@@ -3,6 +3,7 @@ const router = express.Router({mergeParams: true})
 const Blog = require('../models/blog'),
 Comment = require('../models/comment')
 const middleware = require('../middleware')
+const flash = require('connect-flash')
 
 //Shows comments page if authenticated
 router.get('/', middleware.isLoggedIn, (req, res) => {
@@ -16,7 +17,7 @@ router.get('/', middleware.isLoggedIn, (req, res) => {
 })
 
 //Creates new comment
-router.post('/', async function(req, res){
+router.post('/', middleware.isLoggedIn, async function(req, res){
     let blog = await Blog.findById(req.params.id)
     req.body.commment = req.sanitize(req.body.comment)
     let comment = await Comment.create({
@@ -33,11 +34,10 @@ router.post('/', async function(req, res){
 router.delete('/:commentId', (req, res) => {
     Comment.findByIdAndDelete(req.params.commentId, (err, foundComment) =>{
         if(err || req.user.username != foundComment.author.username){
-            res.redirect('back')
-            console.log(err)
+            flash('error', "You don't have permission to do that.")
+            res.redirect('/posts/' + req.params.id + '/comments')
         } else{
             res.redirect('back')
-            console.log('that should have worked' + foundComment)
         }
     })
 })
