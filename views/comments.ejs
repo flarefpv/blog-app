@@ -21,7 +21,7 @@
   <form action="/posts/<%= blog._id %>/comments" method="POST">
     <div class="form-group">
       <h2>Leave a comment:</h2>
-      <textarea class="form-control mb-3" name="comment[text]" placeholder="comment" cols="30" rows="7"></textarea>
+      <textarea class="form-control mb-3" name="comment[text]" placeholder="comment" cols="30" rows="3"></textarea>
       <button type="submit" class="btn btn-outline-dark">Submit</button>
     </div>
   </form>
@@ -37,13 +37,23 @@
         <p class="ml-1"><b><%= comment.author.username %>:</b><p>
         <p class="ml-4"><%= comment.text %></p>
         <% if(comment.author.username == currentUser.username) {%> 
-        <form action="/posts/<%= blog.id %>/comments/<%= comment.id %>?_method=DELETE" method="POST">
-          <button class="btn btn-danger btn-sm" type="submit">Delete Comment</button>
+        <form action="/posts/<%= blog.id %>/comments/<%= comment.id %>?_method=DELETE" method="POST" class="text-right">
+          <button class="btn btn-outline-danger btn-sm" type="submit">Delete Comment</button>
         </form>
       <% } %> 
       </div>
     </div>
   </div>
   <% }) %>
+</div>
+<div class="row mt-5">
+  <div class="col-12">
+    <hr>
+  </div>
+</div>
+<div class="row">
+  <div class="col-12 text-center mb-5">
+    <h4><a href="#">Return to top</a></h4>
+  </div>
 </div>
 <%- include ('partials/footer') -%>
