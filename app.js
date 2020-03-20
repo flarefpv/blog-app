@@ -9,6 +9,8 @@ localStrategy = require('passport-local'),
 flash = require('connect-flash'),
 dotenv = require('dotenv/config')
 
+const port = process.env.PORT
+
 //Requiring Routes
 const indexRoutes = require('./routes/index'),
  blogRoutes = require('./routes/blogs'),
@@ -67,6 +69,6 @@ app.use('/posts', blogRoutes)
 app.use('/posts/:id/comments', commentRoutes)
 
 //Server
-app.listen(3000, function(){
-    console.log('Server is listening on PORT ' + 3000)
+app.listen(port, function(){
+    console.log('Server is listening on PORT ' + port)
 })
