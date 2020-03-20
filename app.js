@@ -6,7 +6,8 @@ expressSanitizer = require('express-sanitizer'),
 methodOverride = require('method-override'),
 passport = require('passport'),
 localStrategy = require('passport-local'),
-flash = require('connect-flash')
+flash = require('connect-flash'),
+dotenv = require('dotenv/config')
 
 //Requiring Routes
 const indexRoutes = require('./routes/index'),
@@ -20,7 +21,16 @@ User = require('./models/user')
 seedDB = require('./seed')
 
 //Setup
-mongoose.connect('mongodb://localhost/myblog', { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false })
+mongoose.connect(process.env.DB_CONNECT, { 
+    useNewUrlParser: true, 
+    useUnifiedTopology: true, 
+    useFindAndModify: false 
+}).then(() => {
+    console.log('Connected to db')
+}).catch(err => {
+    console.log('ERROR' + err)
+})
+
 app.set('view engine', 'ejs')
 app.use(express.static(__dirname + '/public'))
 app.use(bodyParser.urlencoded({extended: true}))
@@ -29,10 +39,10 @@ app.use(methodOverride('_method'))
 app.use(flash())
 
 //Deletes all db entries and seeds
-seedDB()
+// seedDB()
 
 app.use(require('express-session')({
-    secret: 'blarfblargblah',
+    secret: process.env.SECRET_MESSAGE,
     resave: false,
     saveUninitialized: false
 }))
