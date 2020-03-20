@@ -25,7 +25,7 @@ seedDB = require('./seed')
 //Setup
 mongoose.connect(process.env.DB_CONNECT, { 
     useNewUrlParser: true, 
-    useUnifiedTopology: true, 
+    useUnifiedTopology: false, 
     useFindAndModify: false 
 }).then(() => {
     console.log('Connected to db')
