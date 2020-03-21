@@ -42,9 +42,10 @@ router.post('/', middleware.isLoggedIn, (req, res) => {
         newBlog.author = author
         newBlog.save()
         if(err){
-            flash('error', 'Something went wrong! Please try again.')
+            req.flash('error', 'Something went wrong! Please try again.')
             res.redirect('/new')
         } else{
+            req.flash('success', 'Post has been created!')
             res.redirect('/posts')
         }
     })
@@ -84,7 +85,8 @@ router.put('/:id', (req, res) => {
             req.flash('error', "You don't have permission to do that.")
             res.redirect('/posts/' + req.params.id + '/comments')
         } else{
-            res.redirect('/posts/' + req.params.id)
+            req.flash('success', 'Your post has been updated.')
+            res.redirect('/posts/' + req.params.id + '/comments')
         }
     })
 })
@@ -95,6 +97,7 @@ router.delete('/:id', (req, res) => {
             req.flash('error', "You don't have permission to do that.")
             res.redirect('/posts/' + req.params.id + '/comments')
         } else{
+            req.flash('success', 'Your post has been removed.')
             res.redirect('/posts')
         }
     })

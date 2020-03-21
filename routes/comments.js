@@ -26,9 +26,9 @@ router.post('/', middleware.isLoggedIn, async function(req, res){
     })
     blog.comments.push(comment)
     blog.save()
+    req.flash('success', 'Thanks for the commment :)')
     res.redirect('/posts/' + req.params.id + '/comments')
     })
-
 
 //deletes comment if authorized
 router.delete('/:commentId', (req, res) => {
@@ -37,6 +37,7 @@ router.delete('/:commentId', (req, res) => {
             flash('error', "You don't have permission to do that.")
             res.redirect('/posts/' + req.params.id + '/comments')
         } else{
+            req.flash('success', 'Your comment has been removed.')
             res.redirect('back')
         }
     })
