@@ -6,7 +6,7 @@ const flash = require('connect-flash')
 
 //Route Route
 router.get('/', (req, res) => {
-    res.redirect('/posts')
+    res.render('landing')
 })
 
 
@@ -46,7 +46,7 @@ router.post('/login', passport.authenticate('local', {
 router.get('/logout', (req, res) => {
     req.logout()
     req.flash('success', 'You have been logged out.')
-    res.redirect('/posts')
+    res.redirect('/')
 })
 
 module.exports = router

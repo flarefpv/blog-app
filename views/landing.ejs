@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en">
   <head>
-    <title>Blog Zone</title>
+    <title>Blog Zone | Welcome!</title>
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -10,13 +10,14 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <link href="https://fonts.googleapis.com/css?family=Lato:400,700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/stylesheets/app.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.2/animate.min.css">
     <script src="https://kit.fontawesome.com/579474135d.js" crossorigin="anonymous"></script>
   </head>
   <body>
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <a class="navbar-brand mr-5" href="/posts"><i class="fas fa-book"></i> Blog Zone</a>
+        <a class="navbar-brand mr-5" href="/"><i class="fas fa-book"></i> Blog Zone</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
-          aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+          aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation" id="navToggler">
           <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
@@ -59,26 +60,18 @@
                   <a href="/logout" class="nav-link">Logout</a>
                 </li>
             <% } %> 
-              
           </ul>
         </div>
       </div>
     </nav>
-    <div class="container">
-      <% if(error && error.length > 0) {%>
-        <div class="alert alert-danger alert-dismissible fade show" role="alert">
-          <%= error %>
-          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-      <% } %> 
 
-      <% if(success && success.length > 0) {%>
-        <div class="alert alert-success alert-dismissible fade show" role="alert">
-          <%= success %>
-          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-      <% } %>
+<div class="hero-image animated fadeInDown">
+<div class="hero-text" id="herotext">
+    <h1 id="">Welcome to Blog Zone</h1>
+    <h2 class="mb-5">Write your own posts and hear what people have to say!</h2>
+    <a href="/register" class="btn btn-light btn-lg">Sign Up</a>
+    <p class="mt-5">Click to <a href="/posts">view all posts</a></p>
+</div>
+</div>
+
+<%- include ('partials/footer') -%>
